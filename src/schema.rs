@@ -1,8 +1,8 @@
 table! {
-    expense (id) {
+    expenses (id) {
         id -> Int4,
         amount -> Float4,
-        expense_type -> Text,
+        expense_type -> Varchar,
         created_at -> Timestamp,
     }
 }
@@ -16,6 +16,6 @@ table! {
 }
 
 allow_tables_to_appear_in_same_query!(
-    expense,
+    expenses,
     users,
 );
