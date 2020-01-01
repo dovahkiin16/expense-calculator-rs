@@ -1,5 +1,6 @@
 use chrono::NaiveDateTime;
 use crate::models::User;
+use crate::schema::expenses;
 
 #[derive(Debug, Identifiable, Associations, Queryable)]
 #[belongs_to(User)]

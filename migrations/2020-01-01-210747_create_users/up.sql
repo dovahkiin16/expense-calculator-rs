@@ -2,5 +2,5 @@
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     name VARCHAR NOT NULL,
-    created_at TIMESTAMP DEFAULT now()
+    created_at TIMESTAMP NOT NULL DEFAULT now()
 );
