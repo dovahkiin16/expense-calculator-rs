@@ -1,6 +1,6 @@
 use chrono::NaiveDateTime;
 
-#[derive(Queryable)]
+#[derive(Debug, Queryable)]
 pub struct Expense {
     pub id: i32,
     pub amount: f32,
