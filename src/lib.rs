@@ -1,5 +1,6 @@
 #[macro_use]
 extern crate diesel;
+extern crate bcrypt;
 extern crate dotenv;
 
 use actix_web::{App, HttpServer};

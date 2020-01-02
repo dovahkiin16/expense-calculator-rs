@@ -11,7 +11,9 @@ table! {
 table! {
     users (id) {
         id -> Int4,
+        username -> Varchar,
         name -> Varchar,
+        password -> Varchar,
         created_at -> Timestamp,
     }
 }
