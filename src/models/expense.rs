@@ -1,8 +1,10 @@
 use chrono::NaiveDateTime;
+use serde::Serialize;
+
 use crate::models::User;
 use crate::schema::expenses;
 
-#[derive(Debug, Identifiable, Associations, Queryable)]
+#[derive(Debug, Identifiable, Associations, Serialize, Queryable)]
 #[belongs_to(User)]
 pub struct Expense {
     pub id: i32,

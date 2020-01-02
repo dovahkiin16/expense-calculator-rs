@@ -1,19 +1,19 @@
+#[macro_use]
+extern crate diesel;
+extern crate dotenv;
+
+use actix_web::{HttpServer, App};
+use diesel::pg::PgConnection;
+use diesel::prelude::*;
+use dotenv::dotenv;
+use std::env;
+
 pub mod models;
 pub mod schema;
 pub mod database;
 
 pub mod routes;
 mod controllers;
-
-#[macro_use]
-extern crate diesel;
-extern crate dotenv;
-
-use actix_web::{HttpServer, App, web};
-use diesel::pg::PgConnection;
-use diesel::prelude::*;
-use dotenv::dotenv;
-use std::env;
 
 pub fn establish_connection() -> PgConnection {
     dotenv().ok();
