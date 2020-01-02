@@ -1,6 +1,5 @@
 mod expense;
 mod user;
 
-pub use expense::Expense;
+pub use expense::*;
 pub use user::User;
-

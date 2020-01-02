@@ -2,18 +2,18 @@
 extern crate diesel;
 extern crate dotenv;
 
-use actix_web::{HttpServer, App};
+use actix_web::{App, HttpServer};
 use diesel::pg::PgConnection;
 use diesel::prelude::*;
 use dotenv::dotenv;
 use std::env;
 
+pub mod database;
 pub mod models;
 pub mod schema;
-pub mod database;
 
-pub mod routes;
 mod controllers;
+pub mod routes;
 
 pub fn establish_connection() -> PgConnection {
     dotenv().ok();
@@ -25,11 +25,8 @@ pub fn establish_connection() -> PgConnection {
 
 #[actix_rt::main]
 pub async fn run() -> std::io::Result<()> {
-    HttpServer::new(|| {
-        App::new()
-            .configure(routes::config)
-    })
-    .bind("127.0.0.1:8080")?
-    .run()
-    .await
+    HttpServer::new(|| App::new().configure(routes::config))
+        .bind("127.0.0.1:8080")?
+        .run()
+        .await
 }
