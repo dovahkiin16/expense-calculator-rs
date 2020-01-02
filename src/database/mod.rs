@@ -1,2 +1,2 @@
-mod expense;
-mod user;
+pub mod expense;
+pub mod user;
