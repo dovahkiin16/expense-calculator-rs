@@ -11,6 +11,7 @@ pub struct Expense {
     pub user_id: i32,
     pub amount: f32,
     pub expense_type: String,
+    pub need: bool,
     pub created_at: NaiveDateTime,
 }
 
@@ -21,4 +22,5 @@ pub struct NewExpense {
     pub user_id: i32,
     pub amount: f32,
     pub expense_type: String,
+    pub need: bool,
 }

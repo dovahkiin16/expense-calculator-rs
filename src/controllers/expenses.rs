@@ -15,6 +15,7 @@ pub struct PathUserId {
 pub struct NewExpenseForm {
     pub amount: f32,
     pub expense_type: String,
+    pub need: bool,
 }
 
 pub async fn find_all(info: web::Path<PathUserId>) -> impl Responder {
@@ -34,6 +35,7 @@ pub async fn add_one(
         user_id: info.user_id,
         expense_type: item.expense_type.clone(),
         amount: item.amount,
+        need: item.need,
     };
 
     let new_expense = expense_db::add_one(insertable_expense).expect("Adding expense error");
