@@ -13,10 +13,12 @@ pub async fn find_all(_req: HttpRequest) -> impl Responder {
 }
 
 pub async fn add_one(item: web::Json<NewUser>) -> impl Responder {
+    let pwd = bcrypt::hash(item.password.clone(), 10).unwrap();
+
     let insertable_user = NewUser {
         name: item.name.clone(),
         username: item.username.clone(),
-        password: bcrypt::hash(item.password.clone(), 10).unwrap(),
+        password: pwd,
     };
 
     let new_user = user_db::add_one(insertable_user).unwrap();
