@@ -16,10 +16,10 @@ pub async fn add_one(item: web::Json<NewUser>) -> impl Responder {
     let insertable_user = NewUser {
         name: item.name.clone(),
         username: item.username.clone(),
-        password: bcrypt::hash(item.password.clone(), bcrypt::DEFAULT_COST).unwrap(),
+        password: bcrypt::hash(item.password.clone(), 10).unwrap(),
     };
 
-    let new_user = user_db::add_one(item.into_inner()).unwrap();
+    let new_user = user_db::add_one(insertable_user).unwrap();
     let body = serde_json::to_string(&new_user).unwrap();
 
     HttpResponse::Ok()
