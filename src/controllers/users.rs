@@ -44,13 +44,13 @@ pub async fn add_one(item: web::Json<NewUser>) -> impl Responder {
 pub async fn login(item: web::Json<UserLogin>) -> Result<impl Responder, super::UserError> {
     let user = user_db::find_one_by_username(&item.username);
     let none = user.is_none();
-
+    // check if no user is found using username
     if none {
         return Err(super::UserError::UsernameNotFoundError);
     }
 
     let user = user.unwrap();
-
+    // check if password match
     if user.verify_password(&item.password) {
         let user_display = user.to_display_user();
         let body = serde_json::to_string(&user_display).unwrap();

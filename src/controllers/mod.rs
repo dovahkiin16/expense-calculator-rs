@@ -14,6 +14,7 @@ fn send_ok(data: String) -> impl Responder {
         .body(data)
 }
 
+/// used for sending error messages as a serializable
 #[derive(Debug, Serialize)]
 struct ErrorMessage {
     message: String,
