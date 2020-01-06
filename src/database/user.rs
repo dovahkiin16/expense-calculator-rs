@@ -19,7 +19,7 @@ pub fn find_one_by_username(username: &String) -> Option<User> {
     let conn = crate::establish_connection();
 
     let user_res: Result<User, Error> = users::table
-        .filter(users::username.eq(username))
+        .filter(users::username.eq(&username))
         .get_result::<User>(&conn);
 
     match user_res {
