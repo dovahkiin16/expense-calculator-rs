@@ -3,6 +3,7 @@ extern crate diesel;
 extern crate bcrypt;
 extern crate dotenv;
 
+use actix_cors::Cors;
 use actix_web::{App, HttpServer};
 use diesel::pg::PgConnection;
 use diesel::prelude::*;
@@ -26,8 +27,18 @@ pub fn establish_connection() -> PgConnection {
 
 #[actix_rt::main]
 pub async fn run() -> std::io::Result<()> {
-    HttpServer::new(|| App::new().configure(routes::config))
-        .bind("127.0.0.1:8080")?
-        .run()
-        .await
+    HttpServer::new(move || {
+        App::new()
+            .wrap(
+                Cors::new()
+                    .allowed_origin("*")
+                    .allowed_methods(vec!["GET", "POST"])
+                    .max_age(3600)
+                    .finish(),
+            )
+            .configure(routes::config)
+    })
+    .bind("127.0.0.1:8001")?
+    .run()
+    .await
 }
