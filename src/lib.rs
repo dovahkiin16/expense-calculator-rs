@@ -5,12 +5,12 @@ extern crate dotenv;
 extern crate env_logger;
 
 use actix_cors::Cors;
+use actix_web::middleware::Logger;
 use actix_web::{App, HttpServer};
 use diesel::pg::PgConnection;
 use diesel::prelude::*;
 use dotenv::dotenv;
 use std::env;
-use actix_web::middleware::Logger;
 
 pub mod database;
 pub mod models;

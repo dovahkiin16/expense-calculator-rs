@@ -43,7 +43,8 @@ impl error::ResponseError for UserError {
     fn error_response(&self) -> HttpResponse {
         let body = serde_json::to_string(&ErrorMessage {
             message: self.to_string(),
-        }).unwrap();
+        })
+        .unwrap();
 
         HttpResponseBuilder::new(self.status_code())
             .set_header(header::CONTENT_TYPE, "application/json")

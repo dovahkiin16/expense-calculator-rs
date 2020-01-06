@@ -24,13 +24,13 @@ pub fn find_one_by_username(username: &String) -> Option<User> {
 
     match user_res {
         Ok(user) => {
-            dbg!{&user};
+            dbg! {&user};
             return Some(user);
-        },
+        }
         Err(e) => {
-            dbg!{e};
+            dbg! {e};
             None
-        },
+        }
     }
 }
 
