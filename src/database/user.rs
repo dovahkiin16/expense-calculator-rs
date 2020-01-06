@@ -23,7 +23,10 @@ pub fn find_one_by_username(username: &String) -> Option<User> {
         .get_result::<User>(&conn);
 
     match user_res {
-        Ok(user) => Some(user),
+        Ok(user) => {
+            dbg!{&user};
+            return Some(user);
+        },
         Err(e) => {
             dbg!{e};
             None

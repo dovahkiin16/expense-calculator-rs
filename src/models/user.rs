@@ -20,7 +20,7 @@ impl User {
         DisplayUser {
             id: self.id,
             name: self.name.clone(),
-            username: self.name.clone(),
+            username: self.username.clone(),
         }
     }
 }

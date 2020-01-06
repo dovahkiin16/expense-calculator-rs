@@ -35,7 +35,6 @@ pub async fn run() -> std::io::Result<()> {
         App::new()
             .wrap(
                 Cors::new()
-                    .allowed_origin("*")
                     .allowed_methods(vec!["GET", "POST"])
                     .max_age(3600)
                     .finish(),
