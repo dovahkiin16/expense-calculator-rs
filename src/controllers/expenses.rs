@@ -1,5 +1,5 @@
 use actix_web::{web, HttpResponse, Responder};
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use crate::database::expense as expense_db;
 use crate::models::NewExpense;
@@ -40,6 +40,24 @@ pub async fn add_one(
 
     let new_expense = expense_db::add_one(insertable_expense).expect("Adding expense error");
     let body = serde_json::to_string(&new_expense).unwrap();
+
+    HttpResponse::Ok()
+        .content_type("application/json")
+        .body(body)
+}
+
+#[derive(Debug, Serialize)]
+pub struct TotalExpense {
+    total_expense: f32
+}
+
+pub async fn get_total_expense(info: web::Path<PathUserId>) -> impl Responder {
+    let expense_sum = expense_db::get_expenses_sum(info.user_id).unwrap();
+    let body_struct = TotalExpense {
+        total_expense: expense_sum
+    };
+
+    let body = serde_json::to_string(&body_struct).unwrap();
 
     HttpResponse::Ok()
         .content_type("application/json")
