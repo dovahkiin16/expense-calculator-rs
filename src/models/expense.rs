@@ -26,6 +26,7 @@ pub struct NewExpense {
 }
 
 /// Expense types in string
+#[derive(Debug, PartialEq)]
 pub enum ExpenseType {
     Food,
     Transportation,
@@ -68,9 +69,7 @@ mod tests {
 
     macro_rules! value_cmp {
         ($str:expr, $exp_type:expr) => {
-            // $str
-            let test = $exp_type;
-            assert_eq!($str, test.value());
+            assert_eq!($str, $exp_type.value());
         };
     }
 
@@ -86,7 +85,28 @@ mod tests {
 
     #[test]
     #[should_panic]
-    fn test_expense_type_value_should_fail() {
+    fn test_expense_type_value_should_panic() {
         value_cmp!("food!", ExpenseType::Food);
+    }
+
+    macro_rules! from_cmp {
+        ($str:expr, $expr_type:expr) => {
+            assert_eq!(Some($expr_type), ExpenseType::from($str));
+        }
+    }
+
+    #[test]
+    fn test_expense_type_from() {
+        from_cmp!("food", ExpenseType::Food);
+        from_cmp!("transportation", ExpenseType::Transportation);
+        from_cmp!("rent", ExpenseType::Rent);
+        from_cmp!("utilities", ExpenseType::Utilities);
+        from_cmp!("loan", ExpenseType::Loan);
+        from_cmp!("savings", ExpenseType::Savings);
+    }
+
+    #[test]
+    fn test_expense_type_from_should_return_none() {
+        assert_eq!(None, ExpenseType::from("_"))
     }
 }
