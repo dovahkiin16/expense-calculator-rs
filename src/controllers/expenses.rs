@@ -48,13 +48,13 @@ pub async fn add_one(
 
 #[derive(Debug, Serialize)]
 pub struct TotalExpense {
-    total_expense: f32
+    total_expense: f32,
 }
 
 pub async fn get_total_expense(info: web::Path<PathUserId>) -> impl Responder {
     let expense_sum = expense_db::get_expenses_sum(info.user_id).unwrap();
     let body_struct = TotalExpense {
-        total_expense: expense_sum
+        total_expense: expense_sum,
     };
 
     let body = serde_json::to_string(&body_struct).unwrap();
