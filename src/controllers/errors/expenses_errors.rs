@@ -7,8 +7,10 @@ use failure::Fail;
 #[derive(Debug, Fail)]
 pub enum ExpenseError {
     #[fail(display = "Validation error on field: {}", field)]
+    #[allow(dead_code)]
     ValidationError { field: String },
     #[fail(display = "No expenses found")]
+    #[allow(dead_code)]
     NotFound,
 }
 
