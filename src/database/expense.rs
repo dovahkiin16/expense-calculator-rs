@@ -25,7 +25,19 @@ pub fn add_one(item: NewExpense) -> Result<Expense, Error> {
         .get_result::<Expense>(&conn)
 }
 
-pub fn get_expenses_sum(user_id: i32) -> Option<f32> {
+pub fn get_expenses_sum_by_type(user_id: i32, expense_type: &String) -> Option<f32> {
+    use crate::schema::expenses;
+
+    let conn = crate::establish_connection();
+    expenses::table
+        .select(sum(expenses::amount))
+        .filter(expenses::user_id.eq(user_id))
+        .filter(expenses::expense_type.eq(expense_type))
+        .first(&conn)
+        .unwrap()
+}
+
+pub fn get_expense_sum_all(user_id: i32) -> Option<f32> {
     use crate::schema::expenses;
 
     let conn = crate::establish_connection();

@@ -36,8 +36,13 @@ pub enum ExpenseType {
     Savings,
 }
 
+#[derive(Debug)]
+pub enum ExpenseTypeError {
+    ParsingError
+}
+
 impl ExpenseType {
-    fn value(&self) -> String {
+    pub fn value(&self) -> String {
         let res = match self {
             ExpenseType::Food => "food",
             ExpenseType::Transportation => "transportation",
@@ -50,15 +55,15 @@ impl ExpenseType {
         String::from(res)
     }
 
-    fn from(type_str: &str) -> Option<ExpenseType> {
+    pub fn from(type_str: &str) -> Result<ExpenseType, ExpenseTypeError> {
         match type_str {
-            "food" => Some(ExpenseType::Food),
-            "transportation" => Some(ExpenseType::Transportation),
-            "rent" => Some(ExpenseType::Rent),
-            "utilities" => Some(ExpenseType::Utilities),
-            "loan" => Some(ExpenseType::Loan),
-            "savings" => Some(ExpenseType::Savings),
-            _ => None,
+            "food" => Ok(ExpenseType::Food),
+            "transportation" => Ok(ExpenseType::Transportation),
+            "rent" => Ok(ExpenseType::Rent),
+            "utilities" => Ok(ExpenseType::Utilities),
+            "loan" => Ok(ExpenseType::Loan),
+            "savings" => Ok(ExpenseType::Savings),
+            _ => Err(ExpenseTypeError::ParsingError),
         }
     }
 }
@@ -92,7 +97,7 @@ mod tests {
     macro_rules! from_cmp {
         ($str:expr, $expr_type:expr) => {
             assert_eq!(Some($expr_type), ExpenseType::from($str));
-        }
+        };
     }
 
     #[test]

@@ -41,12 +41,12 @@ pub async fn add_one(item: web::Json<NewUser>) -> impl Responder {
 }
 
 /// login using username and password
-pub async fn login(item: web::Json<UserLogin>) -> Result<impl Responder, super::UserError> {
+pub async fn login(item: web::Json<UserLogin>) -> Result<impl Responder, super::errors::UserError> {
     let user = user_db::find_one_by_username(&item.username);
     let none = user.is_none();
     // check if no user is found using username
     if none {
-        return Err(super::UserError::UsernameNotFoundError);
+        return Err(super::errors::UserError::UsernameNotFoundError);
     }
 
     let user = user.unwrap();
@@ -57,6 +57,6 @@ pub async fn login(item: web::Json<UserLogin>) -> Result<impl Responder, super::
 
         Ok(super::send_ok(body))
     } else {
-        Err(super::UserError::UsernameAndPasswordNoMatchError)
+        Err(super::errors::UserError::UsernameAndPasswordNoMatchError)
     }
 }
