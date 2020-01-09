@@ -8,12 +8,15 @@ use failure::Fail;
 pub enum ExpenseError {
     #[fail(display = "Validation error on field: {}", field)]
     ValidationError { field: String },
+    #[fail(display = "No expenses found")]
+    NotFound,
 }
 
 impl error::ResponseError for ExpenseError {
     fn status_code(&self) -> StatusCode {
         match *self {
             ExpenseError::ValidationError { .. } => StatusCode::BAD_REQUEST,
+            ExpenseError::NotFound => StatusCode::NOT_FOUND,
         }
     }
 

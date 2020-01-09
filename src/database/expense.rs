@@ -1,5 +1,6 @@
 use crate::diesel::prelude::*;
 use crate::models::{Expense, NewExpense};
+use chrono::NaiveDateTime;
 use diesel::dsl::sum;
 use diesel::result::Error;
 
@@ -25,25 +26,33 @@ pub fn add_one(item: NewExpense) -> Result<Expense, Error> {
         .get_result::<Expense>(&conn)
 }
 
-pub fn get_expenses_sum_by_type(user_id: i32, expense_type: &String) -> Option<f32> {
+pub fn get_expenses_sum(
+    user_id: i32,
+    exp_type: Option<String>,
+    from: Option<NaiveDateTime>,
+    to: Option<NaiveDateTime>,
+) -> Option<f32> {
     use crate::schema::expenses;
 
     let conn = crate::establish_connection();
-    expenses::table
+    let mut query = expenses::table
+        .into_boxed()
         .select(sum(expenses::amount))
-        .filter(expenses::user_id.eq(user_id))
-        .filter(expenses::expense_type.eq(expense_type))
-        .first(&conn)
-        .unwrap()
-}
+        .filter(expenses::user_id.eq(user_id));
 
-pub fn get_expense_sum_all(user_id: i32) -> Option<f32> {
-    use crate::schema::expenses;
+    // expense type filter
+    if exp_type.is_some() {
+        let exp_type = exp_type.unwrap();
+        query = query.filter(expenses::expense_type.eq(exp_type));
+    };
 
-    let conn = crate::establish_connection();
-    expenses::table
-        .select(sum(expenses::amount))
-        .filter(expenses::user_id.eq(user_id))
-        .first(&conn)
-        .unwrap()
+    // date filter
+    if from.is_some() {
+        query = query.filter(expenses::created_at.ge(from.unwrap()));
+    };
+    if to.is_some() {
+        query = query.filter(expenses::created_at.lt(to.unwrap()));
+    };
+
+    query.first(&conn).unwrap()
 }

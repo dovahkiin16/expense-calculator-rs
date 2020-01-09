@@ -1,9 +1,10 @@
-use actix_web::{web, HttpResponse, Responder};
+use actix_web::{web, Responder};
+use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 
-use crate::database::expense as expense_db;
-use crate::models::{NewExpense, ExpenseType};
 use crate::controllers::errors::ExpenseError;
+use crate::database::expense as expense_db;
+use crate::models::NewExpense;
 
 /// used to get user_id in the URL path
 #[derive(Deserialize)]
@@ -19,25 +20,28 @@ pub struct NewExpenseForm {
     pub need: bool,
 }
 
-/// expense serializer
+/// expense result serializer
 #[derive(Debug, Serialize)]
 pub struct TotalExpense {
     total_expense: f32,
+    exp_type: Option<String>,
+    from: Option<NaiveDateTime>,
+    until: Option<NaiveDateTime>,
 }
 
-/// expense query
+/// expense input query dto
 #[derive(Debug, Deserialize)]
 pub struct ExpenseQuery {
-    t: Option<String>, // type
+    exp_type: Option<String>,
+    from: Option<NaiveDateTime>,
+    until: Option<NaiveDateTime>,
 }
 
 pub async fn find_all(info: web::Path<PathUserId>) -> impl Responder {
     let user_expenses = expense_db::find_all(info.user_id);
     let body = serde_json::to_string(&user_expenses).unwrap();
 
-    HttpResponse::Ok()
-        .content_type("application/json")
-        .body(body)
+    super::send_ok(body)
 }
 
 pub async fn add_one(
@@ -61,36 +65,18 @@ pub async fn get_total_expense(
     path: web::Path<PathUserId>,
     query: web::Query<ExpenseQuery>,
 ) -> Result<impl Responder, ExpenseError> {
-    if query.t.is_some() {
-        let exp_type = ExpenseType::from(query.t.as_ref().unwrap());
+    let exp_sum =
+        expense_db::get_expenses_sum(path.user_id, query.exp_type.clone(), query.from, query.until)
+            .unwrap();
 
-        if exp_type.is_err() {
-            let err = ExpenseError::ValidationError {
-                field: String::from("t")
-            };
-            return Err(err);
-        }
+    let body_struct = TotalExpense {
+        total_expense: exp_sum,
+        exp_type: query.exp_type.clone(),
+        from: query.from,
+        until: query.until,
+    };
 
-        let exp_type = exp_type.unwrap();
-        let expense_sum = expense_db::get_expenses_sum_by_type(
-            path.user_id,
-            &exp_type.value()
-        ).unwrap();
+    let body = serde_json::to_string(&body_struct).unwrap();
 
-        let body_struct = TotalExpense {
-            total_expense: expense_sum,
-        };
-        let body = serde_json::to_string(&body_struct).unwrap();
-
-        Ok(super::send_ok(body))
-    } else {
-        let expense_sum = expense_db::get_expense_sum_all(path.user_id).unwrap();
-
-        let body_struct = TotalExpense {
-            total_expense: expense_sum,
-        };
-        let body = serde_json::to_string(&body_struct).unwrap();
-
-        Ok(super::send_ok(body))
-    }
+    Ok(super::send_ok(body))
 }
