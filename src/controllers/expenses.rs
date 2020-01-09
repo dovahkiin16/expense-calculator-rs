@@ -35,6 +35,7 @@ pub struct ExpenseQuery {
     exp_type: Option<String>,
     from: Option<NaiveDateTime>,
     until: Option<NaiveDateTime>,
+    need: Optino<bool>,
 }
 
 pub async fn find_all(info: web::Path<PathUserId>) -> impl Responder {
@@ -65,9 +66,13 @@ pub async fn get_total_expense(
     path: web::Path<PathUserId>,
     query: web::Query<ExpenseQuery>,
 ) -> Result<impl Responder, ExpenseError> {
-    let exp_sum =
-        expense_db::get_expenses_sum(path.user_id, query.exp_type.clone(), query.from, query.until)
-            .unwrap();
+    let exp_sum = expense_db::get_expenses_sum(
+        path.user_id,
+        query.exp_type.clone(),
+        query.from,
+        query.until,
+        query.need,
+    ).unwrap();
 
     let body_struct = TotalExpense {
         total_expense: exp_sum,

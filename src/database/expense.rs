@@ -31,6 +31,7 @@ pub fn get_expenses_sum(
     exp_type: Option<String>,
     from: Option<NaiveDateTime>,
     to: Option<NaiveDateTime>,
+    need: Option<bool>,
 ) -> Option<f32> {
     use crate::schema::expenses;
 
@@ -53,6 +54,11 @@ pub fn get_expenses_sum(
     if to.is_some() {
         query = query.filter(expenses::created_at.lt(to.unwrap()));
     };
+
+    // need?
+    if need.is_some() {
+        query = query.filter(expenses::need.eq(need.unwrap()));
+    }
 
     query.first(&conn).unwrap()
 }

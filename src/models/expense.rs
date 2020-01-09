@@ -24,4 +24,3 @@ pub struct NewExpense {
     pub expense_type: String,
     pub need: bool,
 }
-
