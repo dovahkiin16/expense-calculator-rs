@@ -35,7 +35,7 @@ pub struct ExpenseQuery {
     exp_type: Option<String>,
     from: Option<NaiveDateTime>,
     until: Option<NaiveDateTime>,
-    need: Optino<bool>,
+    need: Option<bool>,
 }
 
 pub async fn find_all(info: web::Path<PathUserId>) -> impl Responder {
