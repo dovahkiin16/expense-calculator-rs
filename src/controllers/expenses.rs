@@ -72,7 +72,8 @@ pub async fn get_total_expense(
         query.from,
         query.until,
         query.need,
-    ).unwrap_or(0f32);
+    )
+    .unwrap_or(0f32);
 
     let body_struct = TotalExpense {
         total_expense: exp_sum,

@@ -37,9 +37,9 @@ pub fn get_expenses_sum(
 
     let conn = crate::establish_connection();
     let mut query = expenses::table
-        .into_boxed()
         .select(sum(expenses::amount))
-        .filter(expenses::user_id.eq(user_id));
+        .filter(expenses::user_id.eq(user_id))
+        .into_boxed();
 
     // expense type filter
     if exp_type.is_some() {
