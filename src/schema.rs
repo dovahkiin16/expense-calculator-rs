@@ -6,6 +6,7 @@ table! {
         expense_type -> Varchar,
         need -> Bool,
         created_at -> Timestamp,
+        description -> Nullable<Text>,
     }
 }
 
@@ -21,4 +22,7 @@ table! {
 
 joinable!(expenses -> users (user_id));
 
-allow_tables_to_appear_in_same_query!(expenses, users,);
+allow_tables_to_appear_in_same_query!(
+    expenses,
+    users,
+);

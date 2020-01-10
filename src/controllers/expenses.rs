@@ -18,6 +18,7 @@ pub struct NewExpenseForm {
     pub amount: f32,
     pub expense_type: String,
     pub need: bool,
+    pub description: Option<String>,
 }
 
 /// expense result serializer
@@ -54,6 +55,7 @@ pub async fn add_one(
         expense_type: item.expense_type.clone(),
         amount: item.amount,
         need: item.need,
+        description: item.description.clone(),
     };
 
     let new_expense = expense_db::add_one(insertable_expense).expect("Adding expense error");

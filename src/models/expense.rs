@@ -13,6 +13,7 @@ pub struct Expense {
     pub expense_type: String,
     pub need: bool,
     pub created_at: NaiveDateTime,
+    pub description: Option<String>,
 }
 
 /// used for inserting new expense
@@ -23,4 +24,5 @@ pub struct NewExpense {
     pub amount: f32,
     pub expense_type: String,
     pub need: bool,
+    pub description: Option<String>,
 }
