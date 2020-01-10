@@ -11,7 +11,7 @@ pub fn find_all(user_id: i32) -> Vec<Expense> {
 
     expenses::table
         .filter(expenses::user_id.eq(user_id))
-        .order(expenses::created_at)
+        .order(expenses::created_at.desc())
         .load::<Expense>(&conn)
         .expect("Error loading expenses") // TODO: handle error properly
 }
