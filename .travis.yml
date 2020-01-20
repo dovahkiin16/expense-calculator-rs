@@ -10,3 +10,7 @@ jobs:
 script:
   - cargo build --verbose --all
   - cargo test --verbose --all
+
+branches:
+  only:
+    - master
