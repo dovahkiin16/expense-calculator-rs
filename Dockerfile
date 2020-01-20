@@ -8,16 +8,16 @@ RUN sudo chown -R rust:rust /usr/src/expense-calculator
 
 RUN cargo build --release
 
-CMD ["expense-calculator"]
+# Size optimization
+RUN strip target/x86_64-unknown-linux-musl/release/expense-calculator
 
-RUN cargo build --release
+FROM scratch
 
-FROM alpine:latest
-RUN apk --no-cache add ca-certificates
+WORKDIR /usr/expense-calculator
+#RUN apk --no-cache add ca-certificates
 COPY --from=build \
-    /usr/src/expense-calculator/target/x86_64-unknown-linux-musl/release/expense-calculator \
-    /usr/local/bin/
+    /usr/src/expense-calculator/target/x86_64-unknown-linux-musl/release/expense-calculator .
 
 EXPOSE 8001
 
-CMD ["/usr/local/bin/expense-calculator"]
+ENTRYPOINT ["./expense-calculator"]
