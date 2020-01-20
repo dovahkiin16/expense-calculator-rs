@@ -42,7 +42,7 @@ pub async fn run() -> std::io::Result<()> {
             .wrap(Logger::default())
             .configure(routes::config)
     })
-    .bind("127.0.0.1:8001")?
+    .bind("0.0.0.0:8001")?
     .run()
     .await
 }
