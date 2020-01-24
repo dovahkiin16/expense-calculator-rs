@@ -23,7 +23,7 @@ script:
   - cargo test --verbose --all
 
 before_deploy:
-  - git fetch --unshallow --tags
+  - git fetch --tags
   - export DOCKER_TAG=$(git describe --always)
 
 deploy:
