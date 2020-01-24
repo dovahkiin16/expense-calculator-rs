@@ -20,9 +20,6 @@ jobs:
         - export DOCKER_TAG=$(git describe --always)
       script:
         - ./build.sh
-    - stage: test
-      script:
-        - cargo test --verbose --all
     - stage: publish
       script:
         - ./publish.sh
