@@ -20,6 +20,5 @@ jobs:
         - export DOCKER_TAG=$(git describe --always)
       script:
         - ./build.sh
-    - stage: publish
-      script:
+      after_success:
         - ./publish.sh
