@@ -4,7 +4,7 @@ REPO="docker.pkg.github.com/dovahkiin16"
 TAG=$(git describe)
 
 # login docker
-echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin $REPO
+echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin docker.pkg.github.com
 
 # build
 docker build -t $REPO/expense_calculator:latest \
