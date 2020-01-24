@@ -17,18 +17,18 @@ cache: cargo
 jobs:
   allow_failures:
     - rust: nightly
+  include:
+    - stage: test
+      before_script:
+        - export DOCKER_TAG=$(git describe --always)
+      script:
+        - cargo test --verbose --all
+        - ./push_image.sh
+    - stage: deploy
+      script:
+        - docker push $DOCKER_REPO/expense_calculator:latest
+        - docker push $DOCKER_REPO/expense_calculator:"$DOCKER_TAG"
 
 script:
   - cargo build --verbose --all
   - cargo test --verbose --all
-
-before_deploy:
-  - git fetch --tags
-  - export DOCKER_TAG=$(git describe --always)
-
-deploy:
-  provider: script
-  script: bash push_image.sh
-  skip_cleanup: true
-  on:
-    branch: master
