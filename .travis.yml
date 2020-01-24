@@ -15,15 +15,15 @@ rust:
   - nightly
 cache: cargo
 jobs:
-  allow_failures:
-    - rust: nightly
   include:
-    - stage: test
+    - stage: build
       before_script:
         - export DOCKER_TAG=$(git describe --always)
       script:
-        - cargo test --verbose --all
         - ./push_image.sh
+    - stage: test
+      script:
+        - cargo test --verbose --all
     - stage: deploy
       script:
         - docker push $DOCKER_REPO/expense_calculator:latest
