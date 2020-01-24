@@ -25,5 +25,5 @@ jobs:
         - cargo test --verbose --all
     - stage: deploy
       script:
-        - docker push $DOCKER_REPO/expense_calculator:latest
-        - docker push $DOCKER_REPO/expense_calculator:"$DOCKER_TAG"
+        - bash docker push $DOCKER_REPO/expense_calculator:latest
+        - bash docker push $DOCKER_REPO/expense_calculator:"$DOCKER_TAG"
