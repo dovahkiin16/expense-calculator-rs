@@ -6,7 +6,6 @@ branches:
 
 services:
   - docker
-  - postgresql
 
 git:
   depth: false
