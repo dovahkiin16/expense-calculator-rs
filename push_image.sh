@@ -1,9 +1,6 @@
 #!/bin/bash
 
 REPO="docker.pkg.github.com/dovahkiin16"
-DOCKER_TAG=$(git describe)
-export DOCKER_TAG
-
 echo "TAG $DOCKER_TAG"
 
 # login docker

@@ -19,10 +19,12 @@ script:
   - cargo build --verbose --all
   - cargo test --verbose --all
 
+before_deploy:
+  - export DOCKER_TAG=$(git describe)
+
 deploy:
   provider: script
   script: bash push_image.sh
   skip_cleanup: true
   on:
     branch: master
-
