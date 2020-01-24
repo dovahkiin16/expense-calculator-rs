@@ -12,7 +12,6 @@ git:
 
 rust:
   - stable
-  - nightly
 cache: cargo
 jobs:
   include:
