@@ -30,6 +30,8 @@ pub fn establish_connection() -> PgConnection {
 #[actix_rt::main]
 pub async fn run() -> std::io::Result<()> {
     env_logger::init();
+    let port = env::var("PORT").unwrap_or(String::from("8001"));
+    let ip_bind = "0.0.0.0";
 
     HttpServer::new(move || {
         App::new()
@@ -42,7 +44,7 @@ pub async fn run() -> std::io::Result<()> {
             .wrap(Logger::default())
             .configure(routes::config)
     })
-    .bind("0.0.0.0:8001")?
+    .bind(format!("{}:{}", ip_bind, port))?
     .run()
     .await
 }
