@@ -19,11 +19,10 @@ jobs:
       before_script:
         - export DOCKER_TAG=$(git describe --always)
       script:
-        - ./push_image.sh
+        - ./build.sh
     - stage: test
       script:
         - cargo test --verbose --all
-    - stage: deploy
+    - stage: publish
       script:
-        - bash docker push $DOCKER_REPO/expense_calculator:latest
-        - bash docker push $DOCKER_REPO/expense_calculator:"$DOCKER_TAG"
+        - ./publish.sh
