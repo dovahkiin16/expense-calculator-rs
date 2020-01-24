@@ -28,7 +28,3 @@ jobs:
       script:
         - docker push $DOCKER_REPO/expense_calculator:latest
         - docker push $DOCKER_REPO/expense_calculator:"$DOCKER_TAG"
-
-script:
-  - cargo build --verbose --all
-  - cargo test --verbose --all
