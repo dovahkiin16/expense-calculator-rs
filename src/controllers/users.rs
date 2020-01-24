@@ -3,10 +3,10 @@ use crate::models::NewUser;
 
 use actix_web::web;
 use actix_web::{HttpRequest, HttpResponse, Responder};
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 /// Used for extracting login
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 pub struct UserLogin {
     pub username: String,
     pub password: String,

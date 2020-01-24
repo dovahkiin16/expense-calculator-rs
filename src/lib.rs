@@ -16,7 +16,7 @@ pub mod database;
 pub mod models;
 pub mod schema;
 
-mod controllers;
+pub mod controllers;
 pub mod routes;
 
 pub fn establish_connection() -> PgConnection {
