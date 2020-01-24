@@ -19,9 +19,9 @@ script:
   - cargo build --verbose --all
   - cargo test --verbose --all
 
-after_success:
-  - REPO=docker.pkg.github.com/dovahkiin16
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin $REPO
-  - docker build -t $REPO/expense-calculator-rs:latest -t $REPO/expense-calculator-rs:$(git describe) .
-  - docker push $REPO/expense-calculator-rs:latest
-  - docker push $REPO/expense-calculator-rs:$(git describe)
+deploy:
+  provider: script
+  script: bash push_image.sh
+  on:
+    branch: master
+
