@@ -3,6 +3,8 @@
 REPO="docker.pkg.github.com/dovahkiin16"
 TAG=$(git describe)
 
+echo "TAG $TAG"
+
 # login docker
 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USER" --password-stdin docker.pkg.github.com
 
